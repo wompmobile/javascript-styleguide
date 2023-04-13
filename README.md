@@ -928,6 +928,66 @@ Other Style Guides
     );
     ```
 
+
+  <a name="functions--minimize-side-effects"></a><a name="7.6"></a>
+  - [7.16](#functions--minimize-side-effects) Minimize Side Effects
+
+    > Why? This makes a function's purpose very explicit and prevents unintended consquences. An "ideal" function should return a value without mutating any variables in a higher scope.
+
+    An exception to the rule might be if the side effect is very clear from the function's name
+
+    ```javascript
+    // bad
+    let myValue = 1
+
+    function myBadFunction() {
+      myValue = 2
+    }
+
+    // bad
+    let myArray = [1, 2, 3]
+
+    function myBadFunction() {
+      myArray.push(4)
+
+      return myArray.length
+    }
+
+    let lengthOfMyArray = myBadFunction()
+
+    // good
+    let myValue = 1
+
+    function myGoodFunction(myValue) {
+      return myValue + 1
+    }
+
+    myValue = myGoodFunction(myValue)
+
+    // better
+    const myValue = 1
+
+    function myBetterFunction(myValue) {
+      return myValue + 1
+    }
+
+    let myNewValue = myBetterFunction(myValue)
+
+    // Ok
+    let myObj = {}
+
+    function storeParsedDataOnMyObj(jsonStr) {
+      let parsedData = JSON.parse(jsonStr)
+      // Do other things to parsedData...
+      myObj.parsedData = parsedData
+    }
+
+    // Function name makes it clear what will happen
+    storeParsedDataOnMyObj(jsonStr)
+
+    ```
+
+
 **[⬆ back to top](#table-of-contents)**
 
 ## Arrow Functions
